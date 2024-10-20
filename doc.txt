@@ -1,0 +1,89 @@
+Estrutura de pastas:
+
+    1. css/
+       - Contém o arquivo de estilos (style.css)
+
+    2. data/
+       - Armazena os dados de posts e categorias em arquivos PHP
+         - posts.php
+         - categories.php
+       - Simula o papel de um banco de dados
+
+    3. helpers/
+       - Contém utilitários
+         - url.php: Define a URL base do projeto de forma dinâmica
+
+    4. img/
+       - Pasta onde são armazenadas as imagens associadas aos posts
+
+    5. templates/
+       - Armazena os templates comuns
+         - header.php: Cabeçalho
+         - footer.php: Rodapé
+       - Garante a consistência visual em todas as páginas
+
+    6. Raiz do projeto
+       - Inclui arquivos como:
+         - index.php: Responsável por exibir a página inicial
+         - post.php: Responsável por exibir o conteúdo dos posts individuais
+
+
+/* ********************************************************* */
+
+
+Funcionamento Geral:
+
+    1. Carregamento de Dados
+       Os dados dos posts e das categorias são armazenados em arrays dentro da pasta data:
+
+       1.1. categories.php
+            - Define um array $categories com os nomes das categorias que o blog utiliza
+            - Exemplos: "PHP", "HTML", "CSS", etc.
+
+       1.2. posts.php
+            - Define um array $posts
+            - Cada post é representado como um array associativo contendo:
+              - id: Identificador único do post
+              - title: O título do post
+              - description: Uma breve descrição do post
+              - tags: Um array de tags associadas ao post
+              - img: O nome do arquivo de imagem associado ao post
+
+    2. Template header.php:
+
+       No arquivo header.php, os arquivos de dados categories.php e posts.php são incluídos através de:
+
+       include_once("helpers/url.php");
+       include_once("data/posts.php");
+       include_once("data/categories.php");
+
+       Isso significa que, uma vez que o header.php é incluído em uma página, os dados dos posts e categorias já estão carregados e prontos para uso.
+
+    3. URL Dinâmica:
+
+       O arquivo helpers/url.php define a variável $BASE_URL, que constrói dinamicamente o caminho da URL base do site.
+
+    4. Página Inicial (index.php):
+
+       A página inicial exibe todos os posts que estão armazenados no array $posts. Para isso, utilizamos um laço foreach que percorre cada post e o exibe de forma dinâmica:
+
+       Cada post exibe sua imagem, título (como um link clicável), descrição e tags associadas.
+
+       Imagem: O caminho da imagem é gerado dinamicamente com base no nome da imagem armazenado em $post['img'].
+
+       Título como Link: O título do post é exibido como um link, que leva o usuário para a página post.php, passando o id do post como parâmetro (ex: post.php?id=1).
+
+       Tags: As tags de cada post são exibidas abaixo da descrição, também utilizando o foreach para percorrer o array de tags que está armazenado em $post['tags'].
+
+    5. Página de Post (post.php):
+
+       Quando o usuário clica no link de um post na página inicial, ele é redirecionado para post.php com um parâmetro GET, como post.php?id=2. O código no post.php captura o id do post através de $_GET['id'], localiza o post correto no array $posts, e exibe seu conteúdo completo.
+
+       Este trecho busca o post com o id correspondente e o armazena na variável $currentPost, que é então usada para exibir o conteúdo do post, incluindo título, descrição, imagem e tags.
+
+       Além disso, a barra lateral exibe as tags associadas ao post e a lista de categorias disponíveis no blog.
+
+    6. Templates de Header e Footer:
+
+       header.php: Inclui a barra de navegação e carrega os arquivos de dados e recursos essenciais como CSS e fontes.
+       footer.php: Contém o rodapé padrão do site com o texto de copyright e o fechamento das tags </body> e </html>, garantindo a padronização visual.
